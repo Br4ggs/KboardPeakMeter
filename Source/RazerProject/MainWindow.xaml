@@ -1,0 +1,27 @@
+﻿<Window x:Class="RazerProject.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RazerProject"
+        mc:Ignorable="d"
+        Title="Razer Project" Height="350" Width="500">
+    <Grid Margin="10,10,10,10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="62" Width="193" Click="Logbutton_Click">
+            Start the magic
+        </Button>
+
+        <Button Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40" Width="119" Click="Randombutton_Click" Margin="177,208,177.6,52.8">
+            Random color
+        </Button>
+    </Grid>
+</Window>
