@@ -23,5 +23,7 @@
         <Button Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40" Width="119" Click="Randombutton_Click" Margin="177,208,177.6,52.8">
             Random color
         </Button>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,219,0,0" Grid.Row="1" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged"/>
+        <Label Content="Amplify by:" HorizontalAlignment="Left" Margin="10,194,0,0" Grid.Row="1" VerticalAlignment="Top" Width="83"/>
     </Grid>
 </Window>

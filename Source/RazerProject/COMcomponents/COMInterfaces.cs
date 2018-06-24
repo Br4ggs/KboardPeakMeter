@@ -86,8 +86,6 @@ namespace RazerProject.COMcomponents.Interfaces
 
         [PreserveSig]
         int GetDisplayName(out IntPtr ppszName);
-
-        // WARNING: the rest is undefined. you *can't* implement it, only use it.
     }
 
 
@@ -256,11 +254,17 @@ namespace RazerProject.COMcomponents.Interfaces
     internal interface IAudioSessionEvents
     {
         void OnDisplayNameChanged([MarshalAs(UnmanagedType.LPWStr)] string NewDisplayName, [MarshalAs(UnmanagedType.LPStruct)] Guid EventContext);
+
         void OnIconPathChanged([MarshalAs(UnmanagedType.LPWStr)] string NewIconPath, [MarshalAs(UnmanagedType.LPStruct)] Guid EventContext);
+
         void OnSimpleVolumeChanged(float NewVolume, bool NewMute, [MarshalAs(UnmanagedType.LPStruct)] Guid EventContext);
+
         void OnChannelVolumeChanged(int ChannelCount, IntPtr NewChannelVolumeArray, int ChangedChannel, [MarshalAs(UnmanagedType.LPStruct)] Guid EventContext);
+
         void OnGroupingParamChanged([MarshalAs(UnmanagedType.LPStruct)] Guid NewGroupingParam, [MarshalAs(UnmanagedType.LPStruct)] Guid EventContext);
+
         void OnStateChanged(AudioSessionState NewState);
+
         void OnSessionDisconnected(AudioSessionDisconnectReason DisconnectReason);
     }
 
@@ -294,79 +298,69 @@ namespace RazerProject.COMcomponents.Interfaces
         int NotImpl2();
 
         [PreserveSig]
-        int GetChannelCount(
-            [Out] [MarshalAs(UnmanagedType.U4)] out UInt32 channelCount);
+        int GetChannelCount([Out] [MarshalAs(UnmanagedType.U4)] out UInt32 channelCount);
 
         [PreserveSig]
-        int SetMasterVolumeLevel(
-            [In] [MarshalAs(UnmanagedType.R4)] float level,
-            [In] [MarshalAs(UnmanagedType.LPStruct)] Guid eventContext);
+        int SetMasterVolumeLevel([In] [MarshalAs(UnmanagedType.R4)] float level, [In] [MarshalAs(UnmanagedType.LPStruct)] Guid eventContext);
 
         [PreserveSig]
-        int SetMasterVolumeLevelScalar(
-            [In] [MarshalAs(UnmanagedType.R4)] float level,
-            [In] [MarshalAs(UnmanagedType.LPStruct)] Guid eventContext);
+        int SetMasterVolumeLevelScalar([In] [MarshalAs(UnmanagedType.R4)] float level, [In] [MarshalAs(UnmanagedType.LPStruct)] Guid eventContext);
 
         [PreserveSig]
-        int GetMasterVolumeLevel(
-            [Out] [MarshalAs(UnmanagedType.R4)] out float level);
+        int GetMasterVolumeLevel([Out] [MarshalAs(UnmanagedType.R4)] out float level);
 
         [PreserveSig]
-        int GetMasterVolumeLevelScalar(
-            [Out] [MarshalAs(UnmanagedType.R4)] out float level);
+        int GetMasterVolumeLevelScalar([Out] [MarshalAs(UnmanagedType.R4)] out float level);
 
         [PreserveSig]
-        int SetChannelVolumeLevel(
-            [In] [MarshalAs(UnmanagedType.U4)] UInt32 channelNumber,
-            [In] [MarshalAs(UnmanagedType.R4)] float level,
-            [In] [MarshalAs(UnmanagedType.LPStruct)] Guid eventContext);
+        int SetChannelVolumeLevel([In] [MarshalAs(UnmanagedType.U4)] UInt32 channelNumber, [In] [MarshalAs(UnmanagedType.R4)] float level, [In] [MarshalAs(UnmanagedType.LPStruct)] Guid eventContext);
 
         [PreserveSig]
-        int SetChannelVolumeLevelScalar(
-            [In] [MarshalAs(UnmanagedType.U4)] UInt32 channelNumber,
-            [In] [MarshalAs(UnmanagedType.R4)] float level,
-            [In] [MarshalAs(UnmanagedType.LPStruct)] Guid eventContext);
+        int SetChannelVolumeLevelScalar([In] [MarshalAs(UnmanagedType.U4)] UInt32 channelNumber, [In] [MarshalAs(UnmanagedType.R4)] float level, [In] [MarshalAs(UnmanagedType.LPStruct)] Guid eventContext);
 
         [PreserveSig]
-        int GetChannelVolumeLevel(
-            [In] [MarshalAs(UnmanagedType.U4)] UInt32 channelNumber,
-            [Out] [MarshalAs(UnmanagedType.R4)] out float level);
+        int GetChannelVolumeLevel([In] [MarshalAs(UnmanagedType.U4)] UInt32 channelNumber, [Out] [MarshalAs(UnmanagedType.R4)] out float level);
 
         [PreserveSig]
-        int GetChannelVolumeLevelScalar(
-            [In] [MarshalAs(UnmanagedType.U4)] UInt32 channelNumber,
-            [Out] [MarshalAs(UnmanagedType.R4)] out float level);
+        int GetChannelVolumeLevelScalar([In] [MarshalAs(UnmanagedType.U4)] UInt32 channelNumber, [Out] [MarshalAs(UnmanagedType.R4)] out float level);
 
         [PreserveSig]
-        int SetMute(
-            [In] [MarshalAs(UnmanagedType.Bool)] Boolean isMuted,
-            [In] [MarshalAs(UnmanagedType.LPStruct)] Guid eventContext);
+        int SetMute([In] [MarshalAs(UnmanagedType.Bool)] Boolean isMuted, [In] [MarshalAs(UnmanagedType.LPStruct)] Guid eventContext);
 
         [PreserveSig]
-        int GetMute(
-            [Out] [MarshalAs(UnmanagedType.Bool)] out Boolean isMuted);
+        int GetMute([Out] [MarshalAs(UnmanagedType.Bool)] out Boolean isMuted);
 
         [PreserveSig]
-        int GetVolumeStepInfo(
-            [Out] [MarshalAs(UnmanagedType.U4)] out UInt32 step,
-            [Out] [MarshalAs(UnmanagedType.U4)] out UInt32 stepCount);
+        int GetVolumeStepInfo([Out] [MarshalAs(UnmanagedType.U4)] out UInt32 step, [Out] [MarshalAs(UnmanagedType.U4)] out UInt32 stepCount);
 
         [PreserveSig]
-        int VolumeStepUp(
-            [In] [MarshalAs(UnmanagedType.LPStruct)] Guid eventContext);
+        int VolumeStepUp([In] [MarshalAs(UnmanagedType.LPStruct)] Guid eventContext);
 
         [PreserveSig]
-        int VolumeStepDown(
-            [In] [MarshalAs(UnmanagedType.LPStruct)] Guid eventContext);
+        int VolumeStepDown([In] [MarshalAs(UnmanagedType.LPStruct)] Guid eventContext);
 
         [PreserveSig]
-        int QueryHardwareSupport(
-            [Out] [MarshalAs(UnmanagedType.U4)] out UInt32 hardwareSupportMask);
+        int QueryHardwareSupport([Out] [MarshalAs(UnmanagedType.U4)] out UInt32 hardwareSupportMask);
 
         [PreserveSig]
-        int GetVolumeRange(
-            [Out] [MarshalAs(UnmanagedType.R4)] out float volumeMin,
-            [Out] [MarshalAs(UnmanagedType.R4)] out float volumeMax,
-            [Out] [MarshalAs(UnmanagedType.R4)] out float volumeStep);
+        int GetVolumeRange([Out] [MarshalAs(UnmanagedType.R4)] out float volumeMin, [Out] [MarshalAs(UnmanagedType.R4)] out float volumeMax, [Out] [MarshalAs(UnmanagedType.R4)] out float volumeStep);
     }
+
+
+
+    [Guid("C02216F6-8C67-4B5B-9D00-D008E73E0064"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface IAudioMeterInformation
+    {
+        [PreserveSig]
+        int GetPeakValue(out float pfPeak);
+
+        [PreserveSig]
+        int GetMeteringChannelCount(out int pnChannelCount);
+
+        [PreserveSig]
+        int GetChannelsPeakValues(int u32ChannelCount, [In] IntPtr afPeakValues);
+
+        [PreserveSig]
+        int QueryHardwareSupport(out int pdwHardwareSupportMask);
+    };
 }

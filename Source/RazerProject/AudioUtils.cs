@@ -52,6 +52,23 @@ namespace RazerProject
             return list;
         }
 
+        public static IAudioMeterInformation GetAudioMeterInformation()
+        {
+            IMMDevice speakers = GetSpeakers();
+            if(speakers == null)
+            {
+                return null;
+            }
+
+            object obj;
+            if (speakers.Activate(typeof(IAudioMeterInformation).GUID, CLSCTX.CLSCTX_ALL, IntPtr.Zero, out obj) != 0 || obj == null)
+            {
+                return null;
+            }
+
+            return obj as IAudioMeterInformation;
+        }
+
         public static IAudioEndpointVolume GetMasterVolumeObject()
         {
             IMMDevice speakers = GetSpeakers();
