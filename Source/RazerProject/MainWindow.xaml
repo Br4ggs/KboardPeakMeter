@@ -5,10 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RazerProject"
         mc:Ignorable="d"
-        Title="Razer Project" Height="350" Width="500">
+        Title="Razer Project"
+        Height="350"
+        Width="500"
+        ResizeMode="NoResize">
     <Grid Margin="10,10,10,10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
+            <ColumnDefinition Width="233*" />
+            <ColumnDefinition Width="240*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -16,14 +20,39 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="62" Width="193" Click="Logbutton_Click">
-            Start the magic
+        <Button x:Name="ToggleButton" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="62" Width="193" Click="TimerButton_Click" Margin="47.8,10,-0.4,228.8" Grid.Column="1">
+            Start visualising audio
         </Button>
 
-        <Button Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40" Width="119" Click="Randombutton_Click" Margin="177,208,177.6,52.8">
-            Random color
-        </Button>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,219,0,0" Grid.Row="1" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged"/>
-        <Label Content="Amplify by:" HorizontalAlignment="Left" Margin="10,194,0,0" Grid.Row="1" VerticalAlignment="Top" Width="83"/>
+        <TextBlock x:Name="VisualisationText" HorizontalAlignment="Left" Margin="0,10,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="173" FontSize="14" TextAlignment="Center">
+            Visualisation data
+        </TextBlock>
+        <ComboBox x:Name="VisualisationComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="165" Margin="0,35,0,0" Grid.Row="1" SelectionChanged="FromDataComboBox_SelectionChanged">
+            <ComboBoxItem IsSelected="True">From Speakers</ComboBoxItem>
+            <ComboBoxItem>From Microphone</ComboBoxItem>
+        </ComboBox>
+
+        <ComboBox x:Name="ColorComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="165" Margin="0,62,0,0" Grid.Row="1" SelectionChanged="VisualiseModeComboBox_SelectionChanged">
+            <ComboBoxItem IsSelected="True" Content="Static Color"/>
+            <ComboBoxItem Content="Ramp Color"/>
+            <ComboBoxItem Content="Random Color"/>
+        </ComboBox>
+
+        <TextBlock x:Name="KboardUpdateText" HorizontalAlignment="Left" Margin="10,0,0,117.8" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="25" Width="173" FontSize="14" TextAlignment="Center">
+            Keyboard update interval:
+        </TextBlock>
+        <TextBlock x:Name="KboardUpdateValue" HorizontalAlignment="Left" Margin="188,0,0,117.8" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="25" Width="72" FontSize="14" TextAlignment="Center" Grid.ColumnSpan="2">
+            Value
+        </TextBlock>
+        <Slider x:Name="KboardSlider" HorizontalAlignment="Left" Margin="10,0,0,94.8" Grid.Row="1" VerticalAlignment="Bottom" Width="454" ValueChanged="KboardSlider_ValueChanged" Minimum="10" Maximum="1000" Value="9" SmallChange="1" IsSnapToTickEnabled="True" Grid.ColumnSpan="2"/>
+
+        <TextBlock x:Name="MultiplyText" HorizontalAlignment="Left" Margin="10,0,0,32.8" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="25" Width="83" FontSize="14" TextAlignment="Center">
+            Multiply by:
+        </TextBlock>
+        <TextBlock x:Name="MultiplierValue" HorizontalAlignment="Left" Margin="98,0,0,32.8" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="25" Width="72" FontSize="14" TextAlignment="Center">
+            Value
+        </TextBlock>
+        <Slider x:Name="MultiplySlider" HorizontalAlignment="Left" Margin="10,0,0,9.8" Grid.Row="1" VerticalAlignment="Bottom" Width="454" ValueChanged="MultiplySlider_ValueChanged" Maximum="8" Value="1" Grid.ColumnSpan="2"/>
+
     </Grid>
 </Window>

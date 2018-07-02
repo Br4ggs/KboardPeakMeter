@@ -66,8 +66,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AudioController.cs" />
-    <Compile Include="AudioSession.cs" />
     <Compile Include="AudioUtils.cs" />
+    <Compile Include="ChromaImplementation.cs" />
+    <Compile Include="ColorPicker.cs" />
     <Compile Include="COMcomponents\COMClasses.cs" />
     <Compile Include="COMcomponents\COMEnums.cs" />
     <Compile Include="COMcomponents\COMInterfaces.cs" />
@@ -95,7 +96,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -13,45 +13,6 @@ namespace RazerProject
 {
     class AudioUtils
     {
-        public static IList<AudioSession> GetAllSessions()
-        {
-            //could this method work with Iaudioclient?
-            List<AudioSession> list = new List<AudioSession>();
-
-            IAudioSessionManager2 manager = GetAudioSessionManager();
-            if(manager == null)
-            {
-                return list;
-            }
-
-            IAudioSessionEnumerator sessionEnumerator;
-            manager.GetSessionEnumerator(out sessionEnumerator);
-
-            int count;
-            sessionEnumerator.GetCount(out count);
-
-            for (int i = 0; i < count; i++)
-            {
-                IAudioSessionControl control;
-                sessionEnumerator.GetSession(i, out control);
-
-                if (control == null)
-                {
-                    continue;
-                }
-
-                IAudioSessionControl2 control2 = control as IAudioSessionControl2;
-                if(control2 != null)
-                {
-                    //list.Add(new AudioSession(control2));
-                }
-
-            }
-            Marshal.ReleaseComObject(sessionEnumerator);
-            Marshal.ReleaseComObject(manager);
-            return list;
-        }
-
         public static IAudioMeterInformation GetAudioMeterInformation()
         {
             IMMDevice speakers = GetSpeakers();

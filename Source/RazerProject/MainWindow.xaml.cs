@@ -12,190 +12,81 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Timers;
-using Corale.Colore.Core;
-using Corale.Colore.Razer.Keyboard;
-using ColoreColor = Corale.Colore.Core.Color;
-
-using RazerProject.COMcomponents.Enums;
-using RazerProject.COMcomponents.Interfaces;
 
 namespace RazerProject
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        String app = "Spotify";
-        Random random = new Random();
-        bool logging = false;
-        bool offset = false;
-        Timer timer = new Timer(10);
-
-        float multiplier = 1;
+        ChromaImplementation chromaImplementation;
 
         public MainWindow()
         {
-            Chroma.Instance.Initialize();
-            Chroma.Instance.Keyboard.Clear();
+            chromaImplementation = new ChromaImplementation();
+            chromaImplementation.CurrentPattern = ChromaImplementation.TimerPatterns.idle;
+            chromaImplementation.SetVisualiserMode("Static Color");
             InitializeComponent();
-
-            timer.Elapsed += OnTick;
         }
 
-        private void Logbutton_Click(object sender, RoutedEventArgs e)
+        private void TimerButton_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
-            if (logging)
+
+            if (chromaImplementation.CurrentPattern == ChromaImplementation.TimerPatterns.visualiser)
             {
-                button.Content = "Start the magic";
-                logging = false;
-                timer.Stop();
-                Chroma.Instance.Keyboard.Clear();
+                button.Content = "Start visualising audio";
+                chromaImplementation.CurrentPattern = ChromaImplementation.TimerPatterns.idle;
             }
             else
             {
-                button.Content = "Stop the magic";
-                logging = true;
-                timer.Start();
+                button.Content = "Stop visualising audio";
+                chromaImplementation.CurrentPattern = ChromaImplementation.TimerPatterns.visualiser;
             }
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void MultiplySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            TextBox box = sender as TextBox;
-            multiplier = float.Parse(box.Text);
-        }
+            Slider slider = sender as Slider;
 
-        private void Randombutton_Click(object sender, RoutedEventArgs e)
-        {
-            IAudioEndpointVolume volume = AudioUtils.GetMasterVolumeObject();
-            float volumeLevel;
-            bool mute;
-            volume.GetMute( out mute);
+            chromaImplementation.Multiplier = (float)slider.Value;
 
-            Console.WriteLine(volume.SetMute(!mute, Guid.Empty));
-        }
-
-        private void OnTick(object source, ElapsedEventArgs e)
-        {
-            IAudioMeterInformation volume = AudioUtils.GetAudioMeterInformation();
-
-            //we get the initial volume level
-            float volumeLevel;
-            volume.GetPeakValue(out volumeLevel);
-
-            //we remap the original range to fit the keyboards, and round it off to an integer
-            float remappedValue = RemapNumberToNewRange(volumeLevel, 0, 1, 0, Constants.MaxRows);
-
-            //multiply it by our multiplier
-            remappedValue *= multiplier;
-            int intRemappedValue = (int)Math.Ceiling(remappedValue);
-
-            //we then reverse the range to fit on the keyboard
-            intRemappedValue = (int)RemapNumberToNewRange(intRemappedValue, 0, Constants.MaxRows, Constants.MaxRows, 0);
-            Console.WriteLine(intRemappedValue);
-
-            for(int c = 0; c < Constants.MaxColumns; c++)
+            if (slider.Value > 0.95 && slider.Value < 1.05)
             {
-                for (int r = (Constants.MaxRows - 1); r > -1; r--)
-                {
-                    if (c + 1 < Constants.MaxColumns)
-                    {
-                        Chroma.Instance.Keyboard[r, c] = Chroma.Instance.Keyboard[r, c + 1];
-                    }
-                    else
-                    {
-                        if (r >= intRemappedValue)
-                        {
-                            ColoreColor color = ColoreColor.Green;
-
-                            switch (r)
-                            {
-                                case 0:
-                                    color = ColoreColor.Red;
-                                    break;
-                                case 1:
-                                    color = ColoreColor.Yellow;
-                                    break;
-                                case 2:
-                                case 3:
-                                    color = ColoreColor.Orange;
-                                    break;
-                                default:
-                                    color = ColoreColor.Green;
-                                    break;
-                            }
-                            Chroma.Instance.Keyboard[r, c] = color;
-                        }
-                        else
-                        {
-                            Chroma.Instance.Keyboard[r, c] = ColoreColor.Black;
-                        }
-                    }
-                }
+                MultiplierValue.Text = "None";
             }
-
-            //bool clearing = false;
-            /*for (int c = 0; c < Constants.MaxColumns; c++)
+            else
             {
-                if (intRemappedValue >= c)
-                {
-                    clearing = false;
-                }
-                else
-                {
-                    clearing = true;
-                }
-
-                for (int r = 0; r < Constants.MaxRows; r++)
-                {
-                    if (clearing)
-                    {
-                        Chroma.Instance.Keyboard[r, c] = ColoreColor.Black;
-                    }
-                    else if (!clearing)
-                    {
-                        Chroma.Instance.Keyboard[r, c] = ColoreColor.Green;
-                    }
-                }
-            }*/
-
-            /*bool skipkey = offset;
-            for (int r = 0; r < Constants.MaxRows; r++)
-            {
-                skipkey = !skipkey;
-                for (int c = 0; c < Constants.MaxColumns; c++)
-                {
-                    if (skipkey)
-                    {
-                        Chroma.Instance.Keyboard[r, c] = ColoreColor.White;
-                        skipkey = false;
-                    }
-                    else
-                    {
-                        Chroma.Instance.Keyboard[r, c] = ColoreColor.Black;
-                        skipkey = true;
-                    }
-                }
+                MultiplierValue.Text = slider.Value.ToString("0.00");
             }
-            offset = !offset;*/
         }
 
-        public float RemapNumberToNewRange(float oldValue, float minOldRange, float maxOldRange, float minNewRange, float maxNewRange)
+        private void KboardSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            return minNewRange + (oldValue - minOldRange) * (maxNewRange - minNewRange) / (maxOldRange - minOldRange);
-        }
-    }
+            Slider slider = sender as Slider;
 
-    public static class ClampExtention
-    {
-        public static T Clamp<T>(this T val, T min, T max) where T : IComparable<T>
+            chromaImplementation.TimerInterval = (int)slider.Value;
+            KboardUpdateValue.Text = slider.Value.ToString();
+        }
+
+        private void FromDataComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (val.CompareTo(min) < 0) return min;
-            else if (val.CompareTo(max) > 0) return max;
-            else return val;
+            ComboBox comboBox = sender as ComboBox;
+            ComboBoxItem item = comboBox.SelectedValue as ComboBoxItem;
+            
+            if(item.Content != null)
+            {
+                chromaImplementation.SetSource(item.Content.ToString());
+            }
+        }
+
+        private void VisualiseModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+            ComboBoxItem item = comboBox.SelectedValue as ComboBoxItem;
+
+            if(item.Content != null)
+            {
+                chromaImplementation.SetVisualiserMode(item.Content.ToString());
+            }
         }
     }
 }
