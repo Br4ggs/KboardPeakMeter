@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows;
+using System.Windows.Threading;
 using RazerProject.COMcomponents.Enums;
 using RazerProject.COMcomponents.Interfaces;
 using Corale.Colore.Core;
@@ -14,6 +16,7 @@ namespace RazerProject
 {
     class ChromaImplementation
     {
+    
         public enum TimerPatterns
         {
             visualiser,
@@ -25,12 +28,6 @@ namespace RazerProject
             Static,
             Random,
             Ramp
-        }
-
-        public enum Source
-        {
-            Speakers,
-            Microphone
         }
 
         private TimerPatterns _currentPattern;
@@ -50,7 +47,7 @@ namespace RazerProject
                             _timer.Elapsed -= IdlePattern;
                             _timer.Elapsed += VisualisePattern;
                             _timer.Interval = _timerInterval;
-                            _volume = AudioUtils.GetAudioMeterInformation();
+                            _audioMeter = AudioUtils.GetAudioMeterInformation(_dataFlowSource);
                         }
                         break;
 
@@ -59,7 +56,7 @@ namespace RazerProject
                             _timer.Elapsed -= VisualisePattern;
                             _timer.Elapsed += IdlePattern;
                             _timer.Interval = 1000;
-                            _volume = null;
+                            _audioMeter = null;
                         }
                         break;
                 }
@@ -81,29 +78,33 @@ namespace RazerProject
             }
         }
 
-        private Source _currentSource;
-        public Source CurrentSource
+        public EDataFlow _dataFlowSource;
+        public EDataFlow CurrentSource
         {
             get
             {
-                return _currentSource;
+                return _dataFlowSource;
             }
             set
             {
+                _timer.Stop();
                 switch (value)
                 {
-                    case Source.Microphone:
-                        //get audiometer from speaker
+                    case EDataFlow.eCapture:
+                        _audioMeter = AudioUtils.GetAudioMeterInformation(EDataFlow.eCapture);
+                        _dataFlowSource = EDataFlow.eCapture;
                         break;
-                    case Source.Speakers:
-                        //get audiometer from speakers
+                    case EDataFlow.eRender:
+                        _audioMeter = AudioUtils.GetAudioMeterInformation(EDataFlow.eRender);
+                        _dataFlowSource = EDataFlow.eRender;
                         break;
                 }
-                _currentSource = value;
-                Console.WriteLine(_currentSource);
+                _dataFlowSource = value;
+                _timer.Start();
             }
         }
 
+        //interval for keyboard update in miliseconds
         private int _timerInterval = 1000;
         public int TimerInterval
         {
@@ -123,14 +124,32 @@ namespace RazerProject
             }
         }
 
+        //factor to multiply incoming audio value with
         private float _multiplier = 1;
-        public float Multiplier { get { return _multiplier; } set { _multiplier = value; } }
+        public float Multiplier
+        {
+            get
+            {
+                return _multiplier;
+            }
+            set
+            {
+                _multiplier = value;
+            }
+        }
 
         private bool _timerActivated = false;
-        public bool TimerActivated { get { return _timerActivated; } }
+        public bool TimerActivated
+        {
+            get
+            {
+                return _timerActivated;
+            }
+        }
 
         private bool _offset = false;
-        private IAudioMeterInformation _volume;
+        private IAudioMeterInformation _audioMeter;
+        private IMMDevice _device;
         private Timer _timer;
         private ColorPicker _colorPicker;
 
@@ -148,10 +167,10 @@ namespace RazerProject
             switch (source)
             {
                 case "From Speakers":
-                    CurrentSource = Source.Speakers;
+                    CurrentSource = EDataFlow.eRender;
                     break;
                 case "From Microphone":
-                    CurrentSource = Source.Microphone;
+                    CurrentSource = EDataFlow.eCapture;
                     break;
             }
         }
@@ -191,7 +210,7 @@ namespace RazerProject
         {
             //we get the initial volume level
             float volumeLevel;
-            _volume.GetPeakValue(out volumeLevel);
+            _audioMeter.GetPeakValue(out volumeLevel);
 
             //we remap the original range to fit the keyboards, and round it off to an integer
             float remappedValue = volumeLevel.RemapNumberToNewRange(0, 1, 0, Constants.MaxRows);

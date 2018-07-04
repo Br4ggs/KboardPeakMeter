@@ -35,6 +35,7 @@ namespace RazerProject.COMcomponents.Enums
         eCommunications,
     }
 
+    [Flags]
     internal enum DEVICE_STATE
     {
         ACTIVE = 0x00000001,
@@ -42,6 +43,31 @@ namespace RazerProject.COMcomponents.Enums
         NOTPRESENT = 0x00000004,
         UNPLUGGED = 0x00000008,
         MASK_ALL = 0x0000000F
+    }
+
+    [Flags]
+    public enum DeviceState
+    {
+        /// <summary>
+        /// DEVICE_STATE_ACTIVE
+        /// </summary>
+        Active = 0x00000001,
+        /// <summary>
+        /// DEVICE_STATE_DISABLED
+        /// </summary>
+        Disabled = 0x00000002,
+        /// <summary>
+        /// DEVICE_STATE_NOTPRESENT 
+        /// </summary>
+        NotPresent = 0x00000004,
+        /// <summary>
+        /// DEVICE_STATE_UNPLUGGED
+        /// </summary>
+        Unplugged = 0x00000008,
+        /// <summary>
+        /// DEVICE_STATEMASK_ALL
+        /// </summary>
+        All = 0x0000000F
     }
 
     internal enum AudioSessionState

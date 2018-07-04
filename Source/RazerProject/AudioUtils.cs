@@ -13,16 +13,16 @@ namespace RazerProject
 {
     class AudioUtils
     {
-        public static IAudioMeterInformation GetAudioMeterInformation()
+        public static IAudioMeterInformation GetAudioMeterInformation(EDataFlow source)
         {
-            IMMDevice speakers = GetSpeakers();
-            if(speakers == null)
+            IMMDevice audioSource = GetAudioSource(source);
+            if(audioSource == null)
             {
                 return null;
             }
 
             object obj;
-            if (speakers.Activate(typeof(IAudioMeterInformation).GUID, CLSCTX.CLSCTX_ALL, IntPtr.Zero, out obj) != 0 || obj == null)
+            if (audioSource.Activate(typeof(IAudioMeterInformation).GUID, CLSCTX.CLSCTX_ALL, IntPtr.Zero, out obj) != 0 || obj == null)
             {
                 return null;
             }
@@ -30,16 +30,16 @@ namespace RazerProject
             return obj as IAudioMeterInformation;
         }
 
-        public static IAudioEndpointVolume GetMasterVolumeObject()
+        public static IAudioEndpointVolume GetMasterVolumeObject(EDataFlow source)
         {
-            IMMDevice speakers = GetSpeakers();
-            if(speakers == null)
+            IMMDevice audioSource = GetAudioSource(source);
+            if(audioSource == null)
             {
                 return null;
             }
 
             object obj;
-            if (speakers.Activate(typeof(IAudioEndpointVolume).GUID, CLSCTX.CLSCTX_ALL, IntPtr.Zero, out obj) != 0 || obj == null)
+            if (audioSource.Activate(typeof(IAudioEndpointVolume).GUID, CLSCTX.CLSCTX_ALL, IntPtr.Zero, out obj) != 0 || obj == null)
             {
                 return null;
             }
@@ -47,16 +47,16 @@ namespace RazerProject
             return obj as IAudioEndpointVolume;
         }
 
-        private static IAudioSessionManager2 GetAudioSessionManager()
+        public static IAudioSessionManager2 GetAudioSessionManager(EDataFlow source)
         {
-            IMMDevice speakers = GetSpeakers();
-            if(speakers == null)
+            IMMDevice audioSource = GetAudioSource(source);
+            if(audioSource == null)
             {
                 return null;
             }
 
             object obj;
-            if (speakers.Activate(typeof(IAudioSessionManager2).GUID, CLSCTX.CLSCTX_ALL, IntPtr.Zero, out obj) != 0 || obj == null)
+            if (audioSource.Activate(typeof(IAudioSessionManager2).GUID, CLSCTX.CLSCTX_ALL, IntPtr.Zero, out obj) != 0 || obj == null)
             {
                 return null;
             }
@@ -64,15 +64,15 @@ namespace RazerProject
             return obj as IAudioSessionManager2;
         }
 
-        private static IMMDevice GetSpeakers()
+        public static IMMDevice GetAudioSource(EDataFlow source)
         {
             try
             {
                 IMMDeviceEnumerator deviceEnumerator = (IMMDeviceEnumerator)(new MMDeviceEnumerator());
-                IMMDevice speakers;
-                deviceEnumerator.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia, out speakers);
+                IMMDevice audioSource;
+                deviceEnumerator.GetDefaultAudioEndpoint(source, ERole.eMultimedia, out audioSource);
 
-                return speakers;
+                return audioSource;
             }
             catch
             {

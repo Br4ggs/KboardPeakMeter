@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,9 @@ namespace RazerProject
 {
     public partial class MainWindow : Window
     {
+        [DllImport("winmm.dll", EntryPoint = "mciSendStringA", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+        private static extern int mciSendString(string lpstrCommand, string lpstrReturnString, int uReturnLength, int hwndCallback);
+
         ChromaImplementation chromaImplementation;
 
         public MainWindow()
@@ -35,11 +39,16 @@ namespace RazerProject
             {
                 button.Content = "Start visualising audio";
                 chromaImplementation.CurrentPattern = ChromaImplementation.TimerPatterns.idle;
+
+                mciSendString("close recsound ", "", 0, 0);
             }
             else
             {
                 button.Content = "Stop visualising audio";
                 chromaImplementation.CurrentPattern = ChromaImplementation.TimerPatterns.visualiser;
+
+                mciSendString("open new Type waveaudio Alias recsound", "", 0, 0);
+                mciSendString("record recsound", "", 0, 0);
             }
         }
 

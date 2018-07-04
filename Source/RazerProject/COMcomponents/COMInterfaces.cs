@@ -22,7 +22,8 @@ namespace RazerProject.COMcomponents.Interfaces
         int GetId([MarshalAs(UnmanagedType.LPWStr)] out string ppstrId);
 
         [PreserveSig]
-        int GetState(out DEVICE_STATE pdwState);
+        int GetState(out DeviceState state);
+        //int GetState(out DEVICE_STATE pdwState);
     }
 
 
