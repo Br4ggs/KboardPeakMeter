@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace RazerProject.COMcomponents.Enums
 {
+    /// <summary>
+    /// Flags that are used in activation calls to indicate the execution contexts
+    /// in which an object is to be run
+    /// </summary>
     [Flags]
     internal enum CLSCTX
     {
@@ -16,11 +20,25 @@ namespace RazerProject.COMcomponents.Enums
         CLSCTX_ALL = CLSCTX_INPROC_SERVER | CLSCTX_INPROC_HANDLER | CLSCTX_LOCAL_SERVER | CLSCTX_REMOTE_SERVER
     }
 
+    /// <summary>
+    /// Flags that indicate conditions for creating and deleting
+    /// the object and access modes for the object
+    /// </summary>
+    [Flags]
     internal enum STGM
     {
-        STGM_READ = 0x00000000,
+        STGM_READ = 0x00000000
+        // Rest is not implemented
     }
 
+    /// <summary>
+    /// defines constants that indicate the direction in which audio data flows
+    /// between an audio endpoint device and an application
+    /// 
+    /// eRender signifies devices which render sound, such as speakers
+    /// eCapture signifies devices which capture sound, such as microphones
+    /// eAll encapsulates all devices
+    /// </summary>
     internal enum EDataFlow
     {
         eRender,
@@ -28,6 +46,14 @@ namespace RazerProject.COMcomponents.Enums
         eAll,
     }
 
+    /// <summary>
+    /// Defines constants that indicate the role that the system has
+    /// assigned to an audio endpoint device
+    /// 
+    /// eConsole signifies games, system notification sounds, and voice commands
+    /// eMultimedia signifies music, movies, narration, and live music recording
+    /// eCommunications signifies voice communications (talking to another person)
+    /// </summary>
     internal enum ERole
     {
         eConsole,
@@ -35,6 +61,9 @@ namespace RazerProject.COMcomponents.Enums
         eCommunications,
     }
 
+    /// <summary>
+    /// Values that indicate the current state of an audio endpoint device
+    /// </summary>
     [Flags]
     internal enum DEVICE_STATE
     {
@@ -45,31 +74,9 @@ namespace RazerProject.COMcomponents.Enums
         MASK_ALL = 0x0000000F
     }
 
-    [Flags]
-    public enum DeviceState
-    {
-        /// <summary>
-        /// DEVICE_STATE_ACTIVE
-        /// </summary>
-        Active = 0x00000001,
-        /// <summary>
-        /// DEVICE_STATE_DISABLED
-        /// </summary>
-        Disabled = 0x00000002,
-        /// <summary>
-        /// DEVICE_STATE_NOTPRESENT 
-        /// </summary>
-        NotPresent = 0x00000004,
-        /// <summary>
-        /// DEVICE_STATE_UNPLUGGED
-        /// </summary>
-        Unplugged = 0x00000008,
-        /// <summary>
-        /// DEVICE_STATEMASK_ALL
-        /// </summary>
-        All = 0x0000000F
-    }
-
+    /// <summary>
+    /// Defines constants that indicate the current state of an audio session
+    /// </summary>
     internal enum AudioSessionState
     {
         Inactive = 0,
@@ -77,6 +84,9 @@ namespace RazerProject.COMcomponents.Enums
         Expired = 2
     }
 
+    /// <summary>
+    /// Defines constants that indicate the current state of an audio device
+    /// </summary>
     internal enum AudioDeviceState
     {
         Active = 0x1,
@@ -85,6 +95,9 @@ namespace RazerProject.COMcomponents.Enums
         Unplugged = 0x8,
     }
 
+    /// <summary>
+    /// Defines constants that indicate as to why the audio session what disconnected
+    /// </summary>
     internal enum AudioSessionDisconnectReason
     {
         DisconnectReasonDeviceRemoval = 0,
@@ -95,7 +108,9 @@ namespace RazerProject.COMcomponents.Enums
         DisconnectReasonExclusiveModeOverride = 5
     }
 
-    // NOTE: we only define what we handle
+    /// <summary>
+    /// Specifies the variant types.
+    /// </summary>
     [Flags]
     internal enum VARTYPE : short
     {
@@ -105,5 +120,6 @@ namespace RazerProject.COMcomponents.Enums
         VT_LPWSTR = 31,
         VT_BLOB = 65,
         VT_CLSID = 72,
+        // Rest is not implemented
     }
 }

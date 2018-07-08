@@ -7,11 +7,12 @@ using ColoreColor = Corale.Colore.Core.Color;
 
 namespace RazerProject
 {
+    /// <summary>
+    /// Utility class to help retrieve certain Colore colors
+    /// </summary>
     class ColorPicker
     {
         private Random _random;
-        //public color Random
-        //public color FromRange
 
         public ColorPicker()
         {

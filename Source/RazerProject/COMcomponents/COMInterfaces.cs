@@ -9,6 +9,9 @@ using RazerProject.COMcomponents.Structs;
 
 namespace RazerProject.COMcomponents.Interfaces
 {
+    /// <summary>
+    /// Represents a in or output device for audio, such as microphones or speakers
+    /// </summary>
     [Guid("D666063F-1587-4E43-81F1-B948E807363F"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IMMDevice
     {
@@ -22,12 +25,12 @@ namespace RazerProject.COMcomponents.Interfaces
         int GetId([MarshalAs(UnmanagedType.LPWStr)] out string ppstrId);
 
         [PreserveSig]
-        int GetState(out DeviceState state);
-        //int GetState(out DEVICE_STATE pdwState);
+        int GetState(out DEVICE_STATE pdwState);
     }
 
-
-
+    /// <summary>
+    /// Represents an interator that can iterate through different IMMDevices
+    /// </summary>
     [Guid("A95664D2-9614-4F35-A746-DE8DB63617E6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IMMDeviceEnumerator
     {
@@ -47,8 +50,11 @@ namespace RazerProject.COMcomponents.Interfaces
         int UnregisterEndpointNotificationCallback(IMMNotificationClient pClient);
     }
 
-
-
+    /// <summary>
+    /// Provides notifications when an audio endpoint device is added or removed,
+    /// when the state or properties of an endpoint device change, or when there is a
+    /// change in the default role assigned to an endpoint device
+    /// </summary>
     [Guid("7991EEC9-7E89-4D85-8390-6C703CEC60C0"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IMMNotificationClient
     {
@@ -59,8 +65,9 @@ namespace RazerProject.COMcomponents.Interfaces
         void OnPropertyValueChanged([MarshalAs(UnmanagedType.LPWStr)] string pwstrDeviceId, PROPERTYKEY key);
     }
 
-
-
+    /// <summary>
+    /// Collection of multimedia device resources
+    /// </summary>
     [Guid("0BD7A1BE-7A1A-44DB-8397-CC5392387B5E"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IMMDeviceCollection
     {
@@ -71,8 +78,9 @@ namespace RazerProject.COMcomponents.Interfaces
         int Item(int nDevice, out IMMDevice ppDevice);
     }
 
-
-
+    /// <summary>
+    /// Exposes methods that enumerate and retrieve individual property description details
+    /// </summary>
     [Guid("6f79d558-3e96-4549-a1d1-7d75d2288814"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IPropertyDescription
     {
@@ -89,8 +97,9 @@ namespace RazerProject.COMcomponents.Interfaces
         int GetDisplayName(out IntPtr ppszName);
     }
 
-
-
+    /// <summary>
+    /// Exposes methods for enumerating, getting, and setting property values
+    /// </summary>
     [Guid("886d8eeb-8cf2-4446-8d02-cdba1dbdcf99"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IPropertyStore
     {
@@ -110,8 +119,9 @@ namespace RazerProject.COMcomponents.Interfaces
         int Commit();
     }
 
-
-
+    /// <summary>
+    /// Enables a client to access the session controls and volume controls for an IMMDevice
+    /// </summary>
     [Guid("BFA971F1-4D5E-40BB-935E-967039BFBEE4"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IAudioSessionManager
     {
@@ -122,8 +132,10 @@ namespace RazerProject.COMcomponents.Interfaces
         int GetSimpleAudioVolume([MarshalAs(UnmanagedType.LPStruct)] Guid AudioSessionGuid, int StreamFlags, ISimpleAudioVolume AudioVolume);
     }
 
-
-
+    /// <summary>
+    /// Enables an application to manage submixes for the audio device,
+    /// like a music program thats outputting to the speaker
+    /// </summary>
     [Guid("77AA99A0-1BD6-484F-8BC7-2C654C9A9B6F"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IAudioSessionManager2
     {
@@ -146,16 +158,18 @@ namespace RazerProject.COMcomponents.Interfaces
         int UnregisterDuckNotificationNotImpl();
     }
 
-
-
+    /// <summary>
+    /// Provides notification when an audio session is created
+    /// </summary>
     [Guid("641DD20B-4D41-49CC-ABA3-174B9477BB08"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IAudioSessionNotification
     {
         void OnSessionCreated(IAudioSessionControl NewSession);
     }
 
-
-
+    /// <summary>
+    /// Enumerates audio sessions on an audiosource
+    /// </summary>
     [Guid("E2F5BB11-0570-40CA-ACDD-3AA01277DEE8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IAudioSessionEnumerator
     {
@@ -166,8 +180,43 @@ namespace RazerProject.COMcomponents.Interfaces
         int GetSession(int SessionCount, out IAudioSessionControl Session);
     }
 
+    /// <summary>
+    /// Enables a client to configure the control parameters for an audio session and to monitor events in the session
+    /// </summary>
+    [Guid("F4B1A599-7266-4319-A8CA-E70ACB11E8CD"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface IAudioSessionControl
+    {
+        [PreserveSig]
+        int GetState(out AudioSessionState pRetVal);
 
+        [PreserveSig]
+        int GetDisplayName([MarshalAs(UnmanagedType.LPWStr)] out string pRetVal);
 
+        [PreserveSig]
+        int SetDisplayName([MarshalAs(UnmanagedType.LPWStr)]string Value, [MarshalAs(UnmanagedType.LPStruct)] Guid EventContext);
+
+        [PreserveSig]
+        int GetIconPath([MarshalAs(UnmanagedType.LPWStr)] out string pRetVal);
+
+        [PreserveSig]
+        int SetIconPath([MarshalAs(UnmanagedType.LPWStr)] string Value, [MarshalAs(UnmanagedType.LPStruct)] Guid EventContext);
+
+        [PreserveSig]
+        int GetGroupingParam(out Guid pRetVal);
+
+        [PreserveSig]
+        int SetGroupingParam([MarshalAs(UnmanagedType.LPStruct)] Guid Override, [MarshalAs(UnmanagedType.LPStruct)] Guid EventContext);
+
+        [PreserveSig]
+        int RegisterAudioSessionNotification(IAudioSessionEvents NewNotifications);
+
+        [PreserveSig]
+        int UnregisterAudioSessionNotification(IAudioSessionEvents NewNotifications);
+    }
+
+    /// <summary>
+    /// Can be used to get information about the audio session
+    /// </summary>
     [Guid("bfb7ff88-7239-4fc9-8fa2-07c950be9c6d"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IAudioSessionControl2
     {
@@ -216,41 +265,9 @@ namespace RazerProject.COMcomponents.Interfaces
         int SetDuckingPreference(bool optOut);
     }
 
-
-
-    [Guid("F4B1A599-7266-4319-A8CA-E70ACB11E8CD"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    internal interface IAudioSessionControl
-    {
-        [PreserveSig]
-        int GetState(out AudioSessionState pRetVal);
-
-        [PreserveSig]
-        int GetDisplayName([MarshalAs(UnmanagedType.LPWStr)] out string pRetVal);
-
-        [PreserveSig]
-        int SetDisplayName([MarshalAs(UnmanagedType.LPWStr)]string Value, [MarshalAs(UnmanagedType.LPStruct)] Guid EventContext);
-
-        [PreserveSig]
-        int GetIconPath([MarshalAs(UnmanagedType.LPWStr)] out string pRetVal);
-
-        [PreserveSig]
-        int SetIconPath([MarshalAs(UnmanagedType.LPWStr)] string Value, [MarshalAs(UnmanagedType.LPStruct)] Guid EventContext);
-
-        [PreserveSig]
-        int GetGroupingParam(out Guid pRetVal);
-
-        [PreserveSig]
-        int SetGroupingParam([MarshalAs(UnmanagedType.LPStruct)] Guid Override, [MarshalAs(UnmanagedType.LPStruct)] Guid EventContext);
-
-        [PreserveSig]
-        int RegisterAudioSessionNotification(IAudioSessionEvents NewNotifications);
-
-        [PreserveSig]
-        int UnregisterAudioSessionNotification(IAudioSessionEvents NewNotifications);
-    }
-
-
-
+    /// <summary>
+    /// Provides notifications of session-related events such as changes in the volume level, display name, and session state
+    /// </summary>
     [Guid("24918ACC-64B3-37C1-8CA9-74A66E9957A8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IAudioSessionEvents
     {
@@ -269,8 +286,9 @@ namespace RazerProject.COMcomponents.Interfaces
         void OnSessionDisconnected(AudioSessionDisconnectReason DisconnectReason);
     }
 
-
-
+    /// <summary>
+    /// Provides control of the master volume level of an audio session.
+    /// </summary>
     [Guid("87CE5498-68D6-44E5-9215-6DA47EF883D8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface ISimpleAudioVolume
     {
@@ -287,8 +305,9 @@ namespace RazerProject.COMcomponents.Interfaces
         int GetMute(out bool pbMute);
     }
 
-
-
+    /// <summary>
+    /// represents the volume controls on the audio stream to or from an audio endpoint device
+    /// </summary>
     [Guid("5CDF2C82-841E-4546-9722-0CF74078229A"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IAudioEndpointVolume
     {
@@ -347,8 +366,9 @@ namespace RazerProject.COMcomponents.Interfaces
         int GetVolumeRange([Out] [MarshalAs(UnmanagedType.R4)] out float volumeMin, [Out] [MarshalAs(UnmanagedType.R4)] out float volumeMax, [Out] [MarshalAs(UnmanagedType.R4)] out float volumeStep);
     }
 
-
-
+    /// <summary>
+    /// Represents a peak meter on an audio stream to or from an audio endpoint device
+    /// </summary>
     [Guid("C02216F6-8C67-4B5B-9D00-D008E73E0064"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IAudioMeterInformation
     {

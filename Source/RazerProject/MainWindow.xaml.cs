@@ -16,11 +16,12 @@ using System.Windows.Shapes;
 
 namespace RazerProject
 {
+    /// <summary>
+    /// Main window class used as an initialiser for the program and as gateway,
+    /// as values are passed from here to the ChromaImplementation instance
+    /// </summary>
     public partial class MainWindow : Window
     {
-        [DllImport("winmm.dll", EntryPoint = "mciSendStringA", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
-        private static extern int mciSendString(string lpstrCommand, string lpstrReturnString, int uReturnLength, int hwndCallback);
-
         ChromaImplementation chromaImplementation;
 
         public MainWindow()
@@ -39,16 +40,11 @@ namespace RazerProject
             {
                 button.Content = "Start visualising audio";
                 chromaImplementation.CurrentPattern = ChromaImplementation.TimerPatterns.idle;
-
-                mciSendString("close recsound ", "", 0, 0);
             }
             else
             {
                 button.Content = "Stop visualising audio";
                 chromaImplementation.CurrentPattern = ChromaImplementation.TimerPatterns.visualiser;
-
-                mciSendString("open new Type waveaudio Alias recsound", "", 0, 0);
-                mciSendString("record recsound", "", 0, 0);
             }
         }
 
@@ -56,15 +52,15 @@ namespace RazerProject
         {
             Slider slider = sender as Slider;
 
-            chromaImplementation.Multiplier = (float)slider.Value;
-
             if (slider.Value > 0.95 && slider.Value < 1.05)
             {
                 MultiplierValue.Text = "None";
+                chromaImplementation.Multiplier = 1;
             }
             else
             {
                 MultiplierValue.Text = slider.Value.ToString("0.00");
+                chromaImplementation.Multiplier = (float)slider.Value;
             }
         }
 

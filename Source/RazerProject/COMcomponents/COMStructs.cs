@@ -9,6 +9,9 @@ using RazerProject.COMcomponents.Interfaces;
 
 namespace RazerProject.COMcomponents.Structs
 {
+    /// <summary>
+    /// Specifies the FMTID/PID identifier that programmatically identifies a property. 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     internal struct PROPERTYKEY
     {
@@ -21,8 +24,9 @@ namespace RazerProject.COMcomponents.Structs
         }
     }
 
-
-
+    /// <summary>
+    /// Union portion of PROPVARIANT
+    /// </summary>
     [StructLayout(LayoutKind.Explicit)]
     internal struct PROPVARIANTunion
     {
@@ -36,10 +40,13 @@ namespace RazerProject.COMcomponents.Structs
         public IntPtr pwszVal;
         [FieldOffset(0)]
         public IntPtr puuid;
+        // Rest is not implemented
     }
 
-
-
+    /// <summary>
+    /// used in the ReadMultiple and WriteMultiple methods of IPropertyStorage to
+    /// define the type tag and the value of a property in a property set.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     internal struct PROPVARIANT
     {
