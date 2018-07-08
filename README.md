@@ -1,4 +1,4 @@
-# About ChromaProject
+# About KboardPeakMeter
 Windows Core Api visualisation using Razer Chroma written in C#.
 
 I started this project mostly to get more familiar with a couple of things:
@@ -55,3 +55,10 @@ I didn't use these 3 libraries directly but they did provide a lot of very usefu
 Special thanks to
 [Simon Mourier](https://github.com/smourier) and [Sverrir Sigmnudarson](https://github.com/sverrirs)
 for providing some excelent example on how to use the Windows Core Audio api in your C# projects.
+
+# Visuals
+## Visualisation using speakers.  
+![alt text](https://github.com/Kewol/KboardPeakMeter/blob/master/Images/speakers.gif "audio from speakers")
+  
+## Visualisation using microphone.  
+![alt text](https://github.com/Kewol/KboardPeakMeter/blob/master/Images/microphone.gif "audio from microphone")
