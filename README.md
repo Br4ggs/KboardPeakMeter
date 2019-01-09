@@ -21,7 +21,7 @@ These variables will alter the output depending on whats been set:
 ----
 * Static Color: Will cause the keyboard to be lit in only one color, currently that's green.
 * Ramp Color: Will cause the keyboard to be lit based off of a ramp defined in the ColorPicker class.
-* Random Color: Will kayse the keyboard to be lit with a random color.
+* Random Color: Will cause the keyboard to be lit with a random color.
 
 ## Keyboard Update Interval
 This is the interval in miliseconds that happens between every update of the keyboard, adjust the slider to see
